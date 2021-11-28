@@ -1,5 +1,4 @@
 import Block from './block'
-import cryptoHash from './crypto-hash'
 
 class Blockchain {
   public chain: Block[]
@@ -26,7 +25,7 @@ class Blockchain {
         if (lastHash !== actualLastHash) {
           return false
         }
-        if (cryptoHash(timestamp, JSON.stringify(data), lastHash) !== hash) {
+        if (Block.generateHash({ timestamp, data, lastHash }) !== hash) {
           return false
         }
         return true

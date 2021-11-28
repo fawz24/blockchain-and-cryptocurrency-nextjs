@@ -32,10 +32,21 @@ class Block {
 
     return new this({
       data,
-      hash: cryptoHash(lastHash, JSON.stringify(data), timestamp.toISOString()),
+      hash: this.generateHash({ lastHash, data, timestamp }),
       lastHash,
       timestamp,
     })
+  }
+
+  static generateHash({
+    data,
+    lastHash,
+    timestamp,
+  }: Pick<Block, 'data' | 'lastHash'> & { timestamp: Date | string }) {
+    const stringData = JSON.stringify(data)
+    const stringTimestamp =
+      typeof timestamp === 'string' ? timestamp : timestamp.toISOString()
+    return cryptoHash(lastHash, stringData, stringTimestamp)
   }
 }
 
