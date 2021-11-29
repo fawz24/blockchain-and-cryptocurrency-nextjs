@@ -6,7 +6,16 @@ describe('Block', () => {
   const lastHash = 'foo-hash'
   const hash = 'bar-hash'
   const data: any = []
-  const block = new Block({ data, hash, lastHash, timestamp })
+  const nonce = 1
+  const difficulty = 1
+  const block = new Block({
+    data,
+    difficulty,
+    hash,
+    lastHash,
+    nonce,
+    timestamp,
+  })
 
   it('has a timestamp, lastHash, hash, and data property', () => {
     expect(block.data).toEqual(data)
@@ -49,12 +58,22 @@ describe('Block', () => {
     })
 
     it('creates a SHA-256 `hash` based on the proper inputs', () => {
+      const { difficulty, nonce, timestamp } = minedBlock
       expect(minedBlock.hash).toEqual(
         Block.generateHash({
-          timestamp: minedBlock.timestamp,
+          timestamp: timestamp,
           lastHash: lastBlock.hash,
           data,
+          difficulty,
+          nonce,
         }),
+      )
+    })
+
+    it('sets a `hash` that matches the difficulty criteria', () => {
+      const { difficulty } = minedBlock
+      expect(minedBlock.hash.substring(0, difficulty)).toEqual(
+        '0'.repeat(difficulty),
       )
     })
   })

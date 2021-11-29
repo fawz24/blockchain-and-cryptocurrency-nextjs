@@ -1,6 +1,10 @@
+const INITIAL_DIFFICULTY = 3
+
 export const GENESIS_DATA = {
   data: [] as any,
-  hash: 'ad3948c9deb5df0a35f4afccde0ea506186f8f6205e65035f18a1ff60d0e7c20',
+  difficulty: INITIAL_DIFFICULTY,
+  hash: '7344ded43547484efadd420e450607e438ce8b052eb397745f212a0d2205fee2',
   lastHash: '---------',
+  nonce: 0,
   timestamp: '2021-11-27T16:12:00.000Z',
 }

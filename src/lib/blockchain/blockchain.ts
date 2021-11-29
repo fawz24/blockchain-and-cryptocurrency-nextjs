@@ -20,16 +20,26 @@ class Blockchain {
     }
     return chain
       .slice(1)
-      .every(({ data, hash, lastHash, timestamp }, index) => {
-        const actualLastHash = chain[index].hash
-        if (lastHash !== actualLastHash) {
-          return false
-        }
-        if (Block.generateHash({ timestamp, data, lastHash }) !== hash) {
-          return false
-        }
-        return true
-      })
+      .every(
+        ({ data, difficulty, hash, lastHash, nonce, timestamp }, index) => {
+          const actualLastHash = chain[index].hash
+          if (lastHash !== actualLastHash) {
+            return false
+          }
+          if (
+            Block.generateHash({
+              timestamp,
+              data,
+              lastHash,
+              difficulty,
+              nonce,
+            }) !== hash
+          ) {
+            return false
+          }
+          return true
+        },
+      )
   }
 
   public replaceChain(chain: Block[]) {
