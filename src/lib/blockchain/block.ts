@@ -1,3 +1,4 @@
+import hexToBinary from 'hex-to-binary'
 import { GENESIS_DATA, MINE_RATE } from './config'
 import cryptoHash from './crypto-hash'
 
@@ -49,7 +50,7 @@ class Block {
         originalBlock: lastBlock,
       })
       hash = this.generateHash({ data, difficulty, lastHash, nonce, timestamp })
-    } while (hash.substring(0, difficulty) !== '0'.repeat(difficulty))
+    } while (!this.isDifficultyMetInHash({ hash, difficulty }))
 
     return new this({
       data,
@@ -59,6 +60,13 @@ class Block {
       nonce,
       timestamp,
     })
+  }
+
+  static isDifficultyMetInHash({
+    difficulty,
+    hash,
+  }: Pick<Block, 'difficulty' | 'hash'>) {
+    return hexToBinary(hash).substring(0, difficulty) === '0'.repeat(difficulty)
   }
 
   static generateHash({

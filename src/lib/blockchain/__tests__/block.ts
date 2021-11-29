@@ -71,10 +71,8 @@ describe('Block', () => {
     })
 
     it('sets a `hash` that matches the difficulty criteria', () => {
-      const { difficulty } = minedBlock
-      expect(minedBlock.hash.substring(0, difficulty)).toEqual(
-        '0'.repeat(difficulty),
-      )
+      const { difficulty, hash } = minedBlock
+      expect(Block.isDifficultyMetInHash({ hash, difficulty })).toEqual(true)
     })
 
     it('adjusts the difficulty', () => {

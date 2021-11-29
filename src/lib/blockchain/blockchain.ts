@@ -22,11 +22,11 @@ class Blockchain {
       .slice(1)
       .every(
         ({ data, difficulty, hash, lastHash, nonce, timestamp }, index) => {
-          const actualLastHash = chain[index].hash
-          if (lastHash !== actualLastHash) {
-            return false
-          }
+          const { hash: actualLastHash, difficulty: lastDifficulty } =
+            chain[index]
           if (
+            lastHash !== actualLastHash ||
+            Math.abs(lastDifficulty - difficulty) > 1 ||
             Block.generateHash({
               timestamp,
               data,
