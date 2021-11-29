@@ -1,5 +1,5 @@
 import Block from '../block'
-import { GENESIS_DATA } from '../config'
+import { GENESIS_DATA, MINE_RATE } from '../config'
 
 describe('Block', () => {
   const timestamp = new Date()
@@ -75,6 +75,43 @@ describe('Block', () => {
       expect(minedBlock.hash.substring(0, difficulty)).toEqual(
         '0'.repeat(difficulty),
       )
+    })
+
+    it('adjusts the difficulty', () => {
+      const { difficulty } = lastBlock
+      const possibleResults = [difficulty + 1, difficulty - 1]
+
+      expect(possibleResults.includes(minedBlock.difficulty)).toBe(true)
+    })
+  })
+
+  describe('adjustDifficulty', () => {
+    it('raises the difficulty for a quickly mined block', () => {
+      expect(
+        Block.adjustDifficulty({
+          originalBlock: block,
+          timestamp: new Date(block.timestamp).getTime() + MINE_RATE - 100,
+        }),
+      ).toEqual(block.difficulty + 1)
+    })
+
+    it('lowers the difficulty for a slowly mined block', () => {
+      expect(
+        Block.adjustDifficulty({
+          originalBlock: block,
+          timestamp: new Date(block.timestamp).getTime() + MINE_RATE + 100,
+        }),
+      ).toEqual(block.difficulty - 1)
+    })
+
+    it('has a lower limit of 1', () => {
+      block.difficulty = -1
+      expect(
+        Block.adjustDifficulty({
+          originalBlock: block,
+          timestamp: new Date(block.timestamp).getTime() + MINE_RATE + 100,
+        }),
+      ).toEqual(1)
     })
   })
 })
