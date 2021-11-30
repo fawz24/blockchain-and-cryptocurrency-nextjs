@@ -1,13 +1,13 @@
 {
   "extends": "./tsconfig.base",
   "compilerOptions": {
-    // "composite": true,
+    "composite": true,
     "baseUrl": "./src",
     "rootDir": "./",
     "paths": {
       "@lib/*": ["./lib/*"]
-    }
-    // "incremental": true
+    },
+    "incremental": true
   },
   "include": ["next-env.d.ts", "**/*"],
   "exclude": ["node_modules"]
