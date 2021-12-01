@@ -1,10 +1,11 @@
-import { blockchain } from '@lib/app'
+import { blockchain, broadcastChain } from '@lib/app'
 import { NextApiRequest, NextApiResponse, PageConfig } from 'next'
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
   const { data } = req.body
 
   blockchain.addBlock({ data })
+  broadcastChain()
 
   res.redirect('/api/blocks')
 }
